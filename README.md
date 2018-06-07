@@ -49,9 +49,9 @@ VALUES
 
 ### 데이터 가져오기
 
-SELECT * FROM company
+SELECT * FROM company;
 
-SELECT id, name FROM company
+SELECT id, name FROM company;
 
 ## 4. WHERE Clause
 
@@ -61,12 +61,38 @@ SELECT * FROM company WHERE age = 22;
 
 SELECT * FROM company WHERE age != 22;
 
-SELECT * FROM company WHERE age <> 22;
+SELECT * FROM company WHERE age <> 22;  같지 않음 !=와 같은 의미
 
 SELECT * FROM company WHERE age > 22;
 
 SELECT * FROM company WHERE age >= 22;
 
+SELECT * FROM company WHERE age < 22;
+
+SELECT * FROM company WHERE age <= 22;
+
 ### Logical Operations
 
-SELECT * FROM company WHERE age > 22 AND
+SELECT * FROM company
+WHERE age > 20 AND age <25;
+
+SELECT * FROM company
+WHERE age > 23 AND salary > 4000;
+
+SELECT * FROM company 
+WHERE salary IS null;
+
+SELECT * from company
+WHERE name like 'C%';  (C로 시작되는 문자)
+
+SELECT * from company
+WHERE name like '%n'; (n으로 끝나는 문자)
+
+SELECT * from company
+WHERE name like '%a%'; (a가 들어간 모든 문자)
+
+SELECT * from company
+WHERE age in (20, 10, 9); (age가 20, 10, 9인 값)
+
+SELECT * FROM company
+WHERE age between 10 and 20; (age가 10부터 20인 값)
