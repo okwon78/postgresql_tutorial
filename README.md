@@ -470,3 +470,49 @@ SELECT * FROM company WHERE name like '_h%'
 - 아무 글자 + o + 아무 글자
 
 SELECT * FROM company WHERE name like '%o%'
+
+
+
+## 18.  Join
+
+### Cross Join
+
+- 두 테이블의 컬럼 값에 모든 조합으로 JOIN 수행
+- department 4개 company 8개 : 총 32개 로우 생성 됨
+
+SELECT emp_id, name, dept FROM company CROSS JOIN department
+
+### Inner Join
+
+- 기준 컬럼의 값을 기준으로 JOIN 수행
+
+SELECT name, age, dept FROM company INNER JOIN department ON company.id=department.emp_id
+
+- 다음과 같이 작성할 수도 있다
+
+SELECT name, age, dept FROM company c, department d
+
+WHERE c.id=d.emp_id
+
+### Left and Right Outer Joins
+
+- Outer join은 Inner join 수행 후 수행된다.
+
+- company 테이블을 기준으로 department에 해당되는 값이 있으면 채우고 없으면 NULL.
+
+SELECT name, age, dept FROM company left outer join department
+ON company.id=department.emp_id
+
+- department 테이블을 기준으로 company에 해당되는 값이 있으면 채우고 없으면 NULL
+
+SELECT name, age, dept FROM company right outer join department
+ON company.id=department.emp_id
+
+### Full Outer Join
+
+- Left와 Right outer Join의 합집합
+- 해당되는 로우를 전부 포함 시키고 빈 값은 NULL
+
+SELECT name, age, dept FROM company FULL OUTER JOIN department
+ON company.id=department.emp_id
+
