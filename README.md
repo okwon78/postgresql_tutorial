@@ -137,7 +137,7 @@ CREATE TABLE products (
 	price numeric CHECK (price > 0)
 );
 
-INSERT INTO products VALUES (1, 'AA', -10);  (CHECK 조건으로 동작 안함)
+- INSERT INTO products VALUES (1, 'AA', -10);  (CHECK 조건으로 동작 안함)
 
 CREATE TABLE products (
 	product_num INT,
@@ -155,7 +155,7 @@ CREATE TABLE products (
 	price numeric NOT NULL CHECK (price > 0)
 );
 
-NULL 값은 UNIQUE에 해당되지 않는다. 중복된 NULL 값은 들어 갈 수 있다.
+- NULL 값은 UNIQUE에 해당되지 않는다. 중복된 NULL 값은 들어 갈 수 있다.
 
 CREATE TABLE products (
 	product_num INT UNIQUE,
@@ -163,7 +163,7 @@ CREATE TABLE products (
 	price numeric NOT NULL CHECK (price > 0)
 );
 
-Product_num, name 조합이 고유 해야 한다. 하나라도 다른 값이면 입력 된다.
+- Product_num, name 조합이 고유 해야 한다. 하나라도 다른 값이면 입력 된다.
 
 CREATE TABLE products (
 	product_num INT,
@@ -172,7 +172,64 @@ CREATE TABLE products (
 	UNIQUE(product_num, name)
 );
 
+## 8. PRIMARY KEY AND FOREIGN KEY
 
+### PRIMARY KEY
+
+CREATE TABLE products (
+	product_no INT PRIMARY KEY,
+	name TEXT,
+	price numeric
+);
+
+- product_no, name을 같이 PK로 사용함
+
+CREATE TABLE products (
+	product_no INT,
+	name TEXT,
+	price numeric,
+	PRIMARY KEY(product_no, name)
+);
+
+### FOREIGN KEY
+
+- products 테이블의 product_no를 FK로 같는다.
+
+CREATE TABLE orders (
+	order_id INT PRIMARY KEY,
+	product_no INT REFERENCES products(product_no),
+	quantity INT CHECK (quantity > 0)
+);
+
+CREATE TABLE orders (
+	order_id INT PRIMARY KEY,
+	address TEXT NOT NULL
+);
+
+- 두 개의 테이블을 FK로 같는 경우
+
+CREATE TABLE order_items (
+	product_no INT REFERENCES products(product_no),
+	order_id INT REFERENCES orders(order_id),
+	quantity INT CHECK (quantity > 0),
+	PRIMARY KEY(product_no, order_id)
+);
+
+## 9. ON DELETE RESTRICT AND ON DELETE CASCADE
+
+
+
+- FK의 기본 동작은 ON DELETE RESTRICT 기능을 포함하기 때문에 필요는 없다.
+- ON DELETE CASCADE 는 부모 table의 항목이 삭제되면 해당 항목을 참조하는 자식 항목도 같이 삭제된다.
+
+CREATE TABLE order_items (
+	product_no INT REFERENCES products(product_no) ON DELETE RESTRICT,
+	order_id INT REFERENCES orders(order_id) ON DELETE CASCADE,
+	quantity INT CHECK (quantity > 0),
+	PRIMARY KEY(product_no, order_id)
+);
+
+## 10. ALTER TABLE
 
 
 
