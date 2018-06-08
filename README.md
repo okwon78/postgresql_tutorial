@@ -330,5 +330,104 @@ SELECT * FROM company ORDER BY age ASC;
 
 SELECT * FROM company ORDER BY age ASC, salary DESC;
 
-## 15. Numeric Data Types
+## 15. Data Types
+### ENUM data type
+- sad, happy, ok 순서로 인덱스 값을 같는다.
+
+CREATE TYPE mood as ENUM('sad', 'happy', 'ok');
+
+CREATE TABLE person (
+	name TEXT,
+	current_mood mood
+);
+
+- ENUM 인덱스에 의해서 정렬 된다.
+
+SELECT * FROM person ORDER BY current_mood;
+
+SELECT min(current_mood) FROM person;
+
+### JSON data type
+CREATE TABLE jsondata (
+	id INT,
+	doc JSON
+);
+
+- SQL에서 JSON 문법 확인을 해준다.
+
+INSERT INTO jsondata
+VALUES (1, '{
+            "name": "Kwon",
+            "age": 20,
+            "address": 	{
+                        "first": "F",
+                        "Second": "S"
+                        },
+            "post": 1101
+		}'
+	 );
+
+- json에서 해당 항목을 가지고 온다.
+
+SELECT doc->>'address' as addr FROM jsondata;
+
+- 2차 접근
+
+SELECT doc->'address'->>'first'  FROM jsondata;
+
+- WHERE 조건절 추가
+
+SELECT doc->'address'->>'first'  FROM jsondata WHERE id=1;
+
+### Arrays Data type
+
+#### Creating and Inserting Arrays
+
+CREATE TABLE sal_emp (
+	name TEXT,
+	pay INT[],
+	schedule TEXT[][]
+);
+
+INSERT INTO sal_emp
+VALUES ('Kwon', 
+		'{1000, 1000, 1000, 1000}',
+		'{{"meeting", "lunch"}, {"training","presentation"}}'
+	   );
+
+- 인덱스 값은 1부터 시작한다.
+
+SELECT pay[1] FROM sal_emp
+
+SELECT name, pay[1] FROM sal_emp WHERE pay[1] <> pay[2]
+
+SELECT array_dims(schedule) FROM sal_emp WHERE name='Kwon';
+
+#### Updating Arrays
+
+UPDATE sal_emp SET pay='{1, 2, 3, 4, 5}' where name='Kwon';
+
+UPDATE sal_emp SET pay[1]=8000 where name='Kwon';
+
+- 단일 값 append
+
+UPDATE sal_emp SET pay = array_append(pay, 1234)
+
+- Array 결합
+
+UPDATE sal_emp SET pay = array_cat(pay, ARRAY[1234, 4321])
+
+- 배열에서 값이 1234인 부분 전부 삭제 
+
+UPDATE sal_emp SET pay = array_remove(pay, 1234);
+
+#### Searching Arrays
+
+SELECT * FROM sal_emp WHERE pay[1]=1 and pay[2]=2;
+
+SELECT * FROM sal_emp WHERE 4321=ANY(pay);
+
+SELECT * FROM sal_emp WHERE 4321=ALL(pay);
+
+
 
