@@ -96,3 +96,83 @@ WHERE age in (20, 10, 9); (age가 20, 10, 9인 값)
 
 SELECT * FROM company
 WHERE age between 10 and 20; (age가 10부터 20인 값)
+
+## 5. Comments and Expressions
+
+### Comments
+
+-- This is comment line
+
+/*
+
+This allows 
+
+muli line comments
+
+*/
+
+### Expressions
+
+SELECT name as employee_name FROM company;
+
+SELECT count(*) FROM company; (필드 갯수를 반환)
+
+SELECT max(salary) FROM company;
+
+SELECT min(age) FROM company;
+
+SELECT sum(salary) FROM company;
+
+SELECT avg(salary) FROM company;
+
+SELECT current_timestamp; (현재 타임존 시간 반환)
+
+
+
+## 6. CHECK Constraint
+
+CREATE TABLE products (
+	product_num INT,
+	name TEXT,
+	price numeric CHECK (price > 0)
+);
+
+INSERT INTO products VALUES (1, 'AA', -10);  (CHECK 조건으로 동작 안함)
+
+CREATE TABLE products (
+	product_num INT,
+	name TEXT,
+	price numeric CHECK (price > 0),
+	discounted_price numeric CHECK (discounted_price > 0),
+	CHECK (price > discounted_price)
+);
+
+## 7. UNIQUE AND NOT NULL Constraint
+
+CREATE TABLE products (
+	product_num INT NOT NULL,
+	name TEXT NOT NULL,
+	price numeric NOT NULL CHECK (price > 0)
+);
+
+NULL 값은 UNIQUE에 해당되지 않는다. 중복된 NULL 값은 들어 갈 수 있다.
+
+CREATE TABLE products (
+	product_num INT UNIQUE,
+	name TEXT NOT NULL,
+	price numeric NOT NULL CHECK (price > 0)
+);
+
+Product_num, name 조합이 고유 해야 한다. 하나라도 다른 값이면 입력 된다.
+
+CREATE TABLE products (
+	product_num INT,
+	name TEXT NOT NULL,
+	price numeric,
+	UNIQUE(product_num, name)
+);
+
+
+
+
+
