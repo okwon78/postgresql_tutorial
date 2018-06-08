@@ -429,5 +429,44 @@ SELECT * FROM sal_emp WHERE 4321=ANY(pay);
 
 SELECT * FROM sal_emp WHERE 4321=ALL(pay);
 
+## 16. Aggregate Functions
+
+### Basic
+
+SELECT count(*) FROM company;
+
+SELECT max(age) FROM company;
+
+SELECT avg(age) FROM company;
+
+### Advanced
+
+SELECT array_agg(name) FROM company;
+
+SELECT json_agg(name) FROM company;
+
+- Key-value pair 형태의 json
+
+SELECT json_object_agg(name, age) FROM company;
+
+- 표준 편차, 분산
+
+SELECT stddev(age) FROM company;
+
+SELECT variance(age) FROM company;
 
 
+
+## 17.  LIKE in PostgreSQL
+
+- K글자로 시작되는 단어
+
+SELECT * FROM company WHERE name like 'K%'
+
+- 아무 문자나 하나 + h + 나머지 글자로 된 단어
+
+SELECT * FROM company WHERE name like '_h%'
+
+- 아무 글자 + o + 아무 글자
+
+SELECT * FROM company WHERE name like '%o%'
