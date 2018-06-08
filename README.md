@@ -105,9 +105,9 @@ WHERE age between 10 and 20; (age가 10부터 20인 값)
 
 /*
 
-This allows 
+This allows comment out
 
-muli line comments
+multiple lines
 
 */
 
