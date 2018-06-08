@@ -1,4 +1,4 @@
-# Postgresql tutorial
+# Postgresql Tutorial
 
 ## 1. Create, Delete Database
 ### DB 생성
@@ -137,7 +137,7 @@ CREATE TABLE products (
 	price numeric CHECK (price > 0)
 );
 
-- INSERT INTO products VALUES (1, 'AA', -10);  (CHECK 조건으로 동작 안함)
+- CHECK 조건 맞지 않으면 동작 안함. ex) INSERT INTO products VALUES (1, 'AA', -10);  
 
 CREATE TABLE products (
 	product_num INT,
@@ -146,6 +146,8 @@ CREATE TABLE products (
 	discounted_price numeric CHECK (discounted_price > 0),
 	CHECK (price > discounted_price)
 );
+
+- CHECK를 별도 라인으로 설정할 수 있음
 
 ## 7. UNIQUE AND NOT NULL Constraint
 
@@ -231,5 +233,102 @@ CREATE TABLE order_items (
 
 ## 10. ALTER TABLE
 
+### 컬럼 추가 삭제
 
+CREATE TABLE company (
+	id INT NOT NULL,
+	name text NOT NULL,
+	age INT NOT NULL,
+	address VARCHAR (255),
+	salary REAL
+);
+
+- gender 컬럼 추가
+
+ALTER TABLE company ADD gender char(1);
+
+- gender 컬럼 삭제. 데이터가 있으면 같이 삭제 된다.
+
+ALTER TABLE company DROP COLUMN gender;
+
+### PK 추가 삭제
+
+- pri 이름으로 PK 추가
+
+ALTER TABLE company ADD CONSTRAINT pri PRIMARY KEY(id);
+
+- pri 이름인 PK 삭제
+
+ALTER TABLE company DROP CONSTRAINT pri;
+
+
+
+## 11. UPDATE AND DELETE IN TABLE
+
+- id값이 6인 필드의 age 값을 8로 변경
+
+UPDATE company SET age=8
+WHERE id=6;
+
+- id값이 6인 필드 삭제 
+
+DELETE FROM company WHERE id=6;
+
+## 12. LIMIT And OFFSET Operators
+
+- 3 개만 가지고 옴
+
+SELECT * FROM company LIMIT 3;
+
+- 앞의 3개 다음 3개를 가지고 옴
+
+SELECT * FROM company LIMIT 3 OFFSET 3;
+
+## 13. GROUP BY And HAVING Clause
+
+- 고유한 age를 추출해서 표시
+
+SELECT age FROM company
+GROUP BY age;
+
+- Age 별로 모아서 COUNT(*)로 갯수 표시
+
+SELECT age, COUNT(*) FROM company
+GROUP BY age;
+
+- HAVING은 GROUP BY를 같이 사용해야 한다.
+- HAVING은 그룹으로 묶인 항목에 대한 조건절 이다.
+- group by로 모인 salary값의 최대 값이 2000보다 넘은 age
+
+SELECT age, COUNT(*) FROM company
+GROUP BY age HAVING MAX(salary) > 2000;
+
+- group by로 모인 salary 값의 합의 2000보다 넘는 age 
+
+SELECT age, COUNT(*) FROM company
+GROUP BY age HAVING MAX(salary) > 2000;
+
+SELECT age, COUNT(*) FROM company
+GROUP BY age HAVING COUNT(*) > 1;
+
+- HAVING 대신 다음과 같이 쓸 수 도 있다.
+
+SELECT * FROM (
+	SELECT age, COUNT(*) as emp_count FROM company
+	GROUP BY age
+) as gru 
+WHERE emp_count > 1;
+
+## 14. ORDER BY Clause
+
+- ASC가 디폴드 값이라 적어주지 않아도 된다.
+- ASC의 반대는 DESC 다.
+
+SELECT * FROM company ORDER BY age ASC;
+
+- age를 ASC로 정렬하고 같은 age안에서 DESC로 정렬
+
+SELECT * FROM company ORDER BY age ASC, salary DESC;
+
+## 15. Numeric Data Types
 
