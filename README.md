@@ -516,3 +516,69 @@ ON company.id=department.emp_id
 SELECT name, age, dept FROM company FULL OUTER JOIN department
 ON company.id=department.emp_id
 
+## 19. Alias 
+
+SELECT c.name, c.age, d.dept FROM company c, department d
+WHERE c.id = d.emp_id
+
+## 20. Views
+
+- 사용 예로는 사용자 정보 중 일부만 공개해야 할 경우, 공개 가능한 컬럼만을 모아서 별도의 View를 생성해서 제공할 수 있다.
+- 임의의 테이블이기 때문에 insert, update, delete 등을 수행할 수 없다.
+- 원래 테이블이 변경되면 즉시 반영 된다.
+
+CREATE VIEW company_view as SELECT name, address FROM company;
+
+- Join을 사용해서 만들 수도 있다.
+
+CREATE VIEW company_view AS 
+SELECT name, address, dept FROM company, department WHERE company.id=department.emp_id;
+
+## 21. UNION and UNION ALL
+
+- 두 쿼리를 중복 없이 합쳐 준다. 결국 FULL OUTER JOIN과 동일하다.
+
+SELECT name, address, dept FROM company LEFT OUTER JOIN department
+ON company.id=department.emp_id
+UNION
+SELECT name, address, dept FROM company RIGHT OUTER JOIN department
+ON company.id=department.emp_id
+
+- 중복된 것도 같이 표시해 준다. 결국 INNER JOIN 부분이 중복되서 표시 된다.
+
+SELECT name, address, dept FROM company LEFT OUTER JOIN department
+ON company.id=department.emp_id
+UNION ALL
+SELECT name, address, dept FROM company RIGHT OUTER JOIN department
+ON company.id=department.emp_id
+
+## 22. Truncate Table
+
+- DROP TABLE 사용 시, 스키마가 삭제되지만 TRUNCATE 사용 시, 데이터만 삭제된다.
+
+TRUNCATE TABLE sal_emp;
+
+
+
+## 23. Subqueries
+
+- salaray 3000 이 넘는 age 조건들의 항목을 쿼리
+- (주의) 3000 이상의 salary를 포함한 age가 이하에도 동일하게 있다면 포함 된다.
+
+SELECT * FROM company where age in (
+	SELECT age FROM company WHERE salary > 3000
+)
+
+UPDATE company SET salary=salary*1.5 where age in (
+	SELECT age FROM company WHERE age > 10
+);
+
+
+
+## 24. INDEXES
+
+- explain을 사용해서 성능을 살펴볼 수 있다.
+EXPLAIN SELECT * FROM company WHERE name = 'Kwon';
+
+CREATE INDEX name_idx ON company(name)
+
